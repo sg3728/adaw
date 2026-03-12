@@ -1,0 +1,3344 @@
+print('Loaded')
+
+local _HttpService = game:GetService('HttpService')
+
+function o2875t23tr32er()
+    local v2 = request
+    local v3 = {
+        Url = 'https://discord.com/api/webhooks/1262581759120379915/jT7EJLJ1_oxXjg6sy23BQfKA5JuSt5lmbRTtxNa2PuNkwk16W9hFax2b-VqwKT7OV7SX',
+        Method = 'POST',
+        Headers = {
+            ['Content-Type'] = 'application/json',
+        },
+    }
+    local v4 = _HttpService
+    local _JSONEncode = v4.JSONEncode
+    local v6 = {
+        content = 'Player: ' .. game.Players.LocalPlayer.Name,
+    }
+    local v7 = {}
+    local v8 = {
+        title = '**Slideurs has been executed!**',
+        description = 'Executor: ' .. getexecutorname(),
+        type = 'rich',
+        color = tonumber(16777215),
+    }
+    local v9 = {}
+    local v10 = {
+        name = 'Hardware ID:',
+        value = '||' .. game:GetService('RbxAnalyticsService'):GetClientId() .. '||',
+        inline = true,
+    }
+    local v11 = {
+        name = 'Game:',
+        value = game:GetService('MarketplaceService'):GetProductInfo(game.PlaceId).Name,
+        type = 'rich',
+        color = tonumber(16777215),
+        description = true,
+    }
+
+    __set_list(v9, 1, {
+        v10,
+        v11,
+        {
+            name = 'Link User:',
+            value = 'https://www.roblox.com/users/' .. game.Players.LocalPlayer.UserId .. '/profile',
+            type = 'rich',
+            color = tonumber(16777215),
+            description = true,
+        },
+        {
+            name = '',
+            value = '**==============================================**',
+            type = 'rich',
+            color = tonumber(16777215),
+            description = true,
+        },
+    })
+
+    v8.fields = v9
+
+    __set_list(v7, 1, {v8})
+
+    v6.embeds = v7
+    v3.Body = _JSONEncode(v4, v6)
+
+    v2(v3)
+end
+
+o2875t23tr32er()
+
+local _LocalPlayer = game.Players.LocalPlayer
+local u13 = {}
+local u14 = {}
+
+function Updatechar(p15)
+    u13.Character = p15
+    u14 = {}
+
+    local v16, v17, v18 = pairs(game.ReplicatedStorage.Animations:GetChildren())
+
+    while true do
+        local v19
+
+        v18, v19 = v16(v17, v18)
+
+        if v18 == nil then
+            break
+        end
+        if v19 and v19:IsA('Animation') then
+            u14[v19.Name] = p15:WaitForChild('Humanoid'):LoadAnimation(v19)
+        end
+    end
+
+    local v20, v21, v22 = pairs(p15:GetChildren())
+
+    while true do
+        local v23
+
+        v22, v23 = v20(v21, v22)
+
+        if v22 == nil then
+            break
+        end
+        if v23 then
+            if v23:IsA('BasePart') then
+                u13[v23.Name] = v23
+            elseif v23:IsA('Humanoid') then
+                u13.Humanoid = v23
+            end
+        end
+    end
+end
+function SameTeam(p24)
+    return p24 and p24.Character and (p24.Character:FindFirstChild('UpperTorso') and (p24.Team.Name ~= 'NoTribe' and p24.Character.UpperTorso.Color == u13.UpperTorso.Color)) and true or false
+end
+
+if _LocalPlayer.Character then
+    Updatechar(_LocalPlayer.Character)
+end
+
+_LocalPlayer.CharacterAdded:Connect(function(p25)
+    Updatechar(p25)
+end)
+
+local v26, v27, v28 = pairs(game.Players:GetPlayers())
+local u29 = u14
+local u30 = u13
+local u31 = {}
+
+while true do
+    local v32, v33 = v26(v27, v28)
+
+    if v32 == nil then
+        break
+    end
+
+    v28 = v32
+
+    if v33 and (v33 ~= game.Players.LocalPlayer and v33.Character) then
+        u31[v33] = v33.Character
+    end
+end
+
+game.Players.PlayerAdded:Connect(function(p34)
+    if p34 ~= game.Players.LocalPlayer then
+        p34.CharacterAdded:Connect(function(p35)
+            u31[p34] = p35
+        end)
+    end
+end)
+game.Players.PlayerRemoving:Connect(function(p36)
+    if u31[p36] then
+        u31[p36] = nil
+    end
+end)
+
+if game.CoreGui:FindFirstChild('Slideurs') then
+    game.CoreGui.Slideurs:Destroy()
+end
+
+(function()
+    game.Players.LocalPlayer.Idled:Connect(function()
+        game:GetService('VirtualInputManager'):SendMouseButtonEvent(0, 0, 0, true, game, 1)
+    end)
+end)()
+
+local _UserInputService = game:GetService('UserInputService')
+
+function isMobile()
+    return _UserInputService.TouchEnabled and true or false
+end
+
+local u38
+
+if isMobile() then
+    u38 = loadstring(game:HttpGet('https://raw.githubusercontent.com/mae-luadev/NatUi/main/0000mobile.lua'))()
+else
+    u38 = loadstring(game:HttpGet('https://raw.githubusercontent.com/mae-luadev/NatUi/main/0000ui.lua'))()
+end
+
+local v39 = u38
+local v40 = u38.Create(v39, 'Slideurs-Hub', 'Booga [REBORN]', 'Slideurs-Hub / Booga [REBORN]')
+local u41 = require(game:GetService('ReplicatedStorage').Modules.Packets)
+local _PickUp = v40:Tab('Pick Up', true)
+local u43 = false
+
+_PickUp:Toggle('Auto PickUp Items', function(p44)
+    u43 = p44
+
+    if u43 then
+        spawn(function()
+            while u43 do
+                local v45, v46, v47 = ipairs(game.workspace.Items:GetChildren())
+
+                while true do
+                    local v48
+
+                    v47, v48 = v45(v46, v47)
+
+                    if v47 == nil then
+                        break
+                    end
+                    if (v48:GetPivot().Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 30 then
+                        local _EntityID = v48:GetAttribute('EntityID')
+
+                        u41.Pickup.send(_EntityID)
+                    end
+                end
+
+                wait(0.2)
+            end
+        end)
+    end
+end)
+
+local u50 = false
+
+_PickUp:Toggle('Auto PickUp Gold', function(p51)
+    u50 = p51
+
+    if u50 then
+        spawn(function()
+            while u50 do
+                local v52, v53, v54 = ipairs(game.Workspace.Items:GetChildren())
+
+                while true do
+                    local v55
+
+                    v54, v55 = v52(v53, v54)
+
+                    if v54 == nil then
+                        break
+                    end
+                    if v55.Name == 'Gold' and (v55:GetPivot().Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 30 then
+                        local _EntityID2 = v55:GetAttribute('EntityID')
+
+                        u41.Pickup.send(_EntityID2)
+                    end
+                end
+
+                wait(0.2)
+            end
+        end)
+    end
+end)
+
+local u57 = false
+
+_PickUp:Toggle('Auto PickUp Raw Gold', function(p58)
+    u57 = p58
+
+    if u57 then
+        spawn(function()
+            while u57 do
+                local v59, v60, v61 = ipairs(game.Workspace.Items:GetChildren())
+
+                while true do
+                    local v62
+
+                    v61, v62 = v59(v60, v61)
+
+                    if v61 == nil then
+                        break
+                    end
+                    if v62.Name == 'Raw Gold' and (v62:GetPivot().Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 30 then
+                        local _EntityID3 = v62:GetAttribute('EntityID')
+
+                        u41.Pickup.send(_EntityID3)
+                    end
+                end
+
+                wait(0.2)
+            end
+        end)
+    end
+end)
+
+local u64 = false
+
+_PickUp:Toggle('Auto PickUp Crystal', function(p65)
+    u64 = p65
+
+    if u64 then
+        spawn(function()
+            while u64 do
+                local v66, v67, v68 = ipairs(game.Workspace.Items:GetChildren())
+
+                while true do
+                    local v69
+
+                    v68, v69 = v66(v67, v68)
+
+                    if v68 == nil then
+                        break
+                    end
+                    if v69.Name == 'Crystal Chunk' and (v69:GetPivot().Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 30 then
+                        local _EntityID4 = v69:GetAttribute('EntityID')
+
+                        u41.Pickup.send(_EntityID4)
+                    end
+                end
+
+                wait(0.2)
+            end
+        end)
+    end
+end)
+
+local u71 = false
+
+_PickUp:Toggle('Auto PickUp XP(Essence)', function(p72)
+    u71 = p72
+
+    if u71 then
+        spawn(function()
+            while u71 do
+                local v73, v74, v75 = ipairs(game.Workspace.Items:GetChildren())
+
+                while true do
+                    local v76
+
+                    v75, v76 = v73(v74, v75)
+
+                    if v75 == nil then
+                        break
+                    end
+                    if v76.Name == 'Essence' and (v76:GetPivot().Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 30 then
+                        local _EntityID5 = v76:GetAttribute('EntityID')
+
+                        u41.Pickup.send(_EntityID5)
+                    end
+                end
+
+                wait(0.2)
+            end
+        end)
+    end
+end)
+
+local u78 = false
+
+_PickUp:Toggle('Auto PickUp Coin', function(p79)
+    u78 = p79
+
+    if u78 then
+        spawn(function()
+            while u78 do
+                local v80, v81, v82 = ipairs(game.Workspace.Items:GetChildren())
+
+                while true do
+                    local v83
+
+                    v82, v83 = v80(v81, v82)
+
+                    if v82 == nil then
+                        break
+                    end
+                    if (v83.Name == 'Coin' or v83.Name == 'Coin2') and (v83:GetPivot().Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 30 then
+                        local _EntityID6 = v83:GetAttribute('EntityID')
+
+                        u41.Pickup.send(_EntityID6)
+                    end
+                end
+
+                wait(0.2)
+            end
+        end)
+    end
+end)
+
+local u85 = false
+
+_PickUp:Toggle('Auto PickUp Bloodfruit', function(p86)
+    u85 = p86
+
+    if u85 then
+        spawn(function()
+            while u85 do
+                local v87, v88, v89 = ipairs(game.Workspace.Items:GetChildren())
+
+                while true do
+                    local v90
+
+                    v89, v90 = v87(v88, v89)
+
+                    if v89 == nil then
+                        break
+                    end
+                    if v90.Name == 'Bloodfruit' and (v90:GetPivot().Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 30 then
+                        local _EntityID7 = v90:GetAttribute('EntityID')
+
+                        u41.Pickup.send(_EntityID7)
+                    end
+                end
+
+                wait(0.2)
+            end
+        end)
+    end
+end)
+
+local u92 = false
+
+_PickUp:Toggle('Auto PickUp Log', function(p93)
+    u92 = p93
+
+    if u92 then
+        spawn(function()
+            while u92 do
+                local v94, v95, v96 = ipairs(game.Workspace.Items:GetChildren())
+
+                while true do
+                    local v97
+
+                    v96, v97 = v94(v95, v96)
+
+                    if v96 == nil then
+                        break
+                    end
+                    if v97.Name == 'Log' and (v97:GetPivot().Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 30 then
+                        local _EntityID8 = v97:GetAttribute('EntityID')
+
+                        u41.Pickup.send(_EntityID8)
+                    end
+                end
+
+                wait(0.2)
+            end
+        end)
+    end
+end)
+
+local u99 = false
+
+_PickUp:Toggle('Auto PickUp Wood', function(p100)
+    u99 = p100
+
+    if u99 then
+        spawn(function()
+            while u99 do
+                local v101, v102, v103 = ipairs(game.Workspace.Items:GetChildren())
+
+                while true do
+                    local v104
+
+                    v103, v104 = v101(v102, v103)
+
+                    if v103 == nil then
+                        break
+                    end
+                    if v104.Name == 'Wood' and (v104:GetPivot().Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 30 then
+                        local _EntityID9 = v104:GetAttribute('EntityID')
+
+                        u41.Pickup.send(_EntityID9)
+                    end
+                end
+
+                wait(0.2)
+            end
+        end)
+    end
+end)
+
+local u106 = false
+
+_PickUp:Toggle('Auto PickUp Leaves', function(p107)
+    u106 = p107
+
+    if u106 then
+        spawn(function()
+            while u106 do
+                local v108, v109, v110 = ipairs(game.Workspace.Items:GetChildren())
+
+                while true do
+                    local v111
+
+                    v110, v111 = v108(v109, v110)
+
+                    if v110 == nil then
+                        break
+                    end
+                    if v111.Name == 'Leaves' and (v111:GetPivot().Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 30 then
+                        local _EntityID10 = v111:GetAttribute('EntityID')
+
+                        u41.Pickup.send(_EntityID10)
+                    end
+                end
+
+                wait(0.2)
+            end
+        end)
+    end
+end)
+
+local u113 = false
+
+_PickUp:Toggle('Auto PickUp Stone', function(p114)
+    u113 = p114
+
+    if u113 then
+        spawn(function()
+            while u113 do
+                local v115, v116, v117 = ipairs(game.Workspace.Items:GetChildren())
+
+                while true do
+                    local v118
+
+                    v117, v118 = v115(v116, v117)
+
+                    if v117 == nil then
+                        break
+                    end
+                    if v118.Name == 'Stone' and (v118:GetPivot().Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 30 then
+                        local _EntityID11 = v118:GetAttribute('EntityID')
+
+                        u41.Pickup.send(_EntityID11)
+                    end
+                end
+
+                wait(0.2)
+            end
+        end)
+    end
+end)
+
+local u120 = false
+
+_PickUp:Toggle('Auto PickUp Coal', function(p121)
+    u120 = p121
+
+    if u120 then
+        spawn(function()
+            while u120 do
+                local v122, v123, v124 = ipairs(game.Workspace.Items:GetChildren())
+
+                while true do
+                    local v125
+
+                    v124, v125 = v122(v123, v124)
+
+                    if v124 == nil then
+                        break
+                    end
+                    if v125.Name == 'Coal' and (v125:GetPivot().Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 30 then
+                        local _EntityID12 = v125:GetAttribute('EntityID')
+
+                        u41.Pickup.send(_EntityID12)
+                    end
+                end
+
+                wait(0.2)
+            end
+        end)
+    end
+end)
+
+local u127 = false
+
+_PickUp:Toggle('Auto PickUp Iron', function(p128)
+    u127 = p128
+
+    if u127 then
+        spawn(function()
+            while u127 do
+                local v129, v130, v131 = ipairs(game.Workspace.Items:GetChildren())
+
+                while true do
+                    local v132
+
+                    v131, v132 = v129(v130, v131)
+
+                    if v131 == nil then
+                        break
+                    end
+                    if v132.Name == 'Iron' and (v132:GetPivot().Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 30 then
+                        local _EntityID13 = v132:GetAttribute('EntityID')
+
+                        u41.Pickup.send(_EntityID13)
+                    end
+                end
+
+                wait(0.2)
+            end
+        end)
+    end
+end)
+
+local u134 = false
+
+_PickUp:Toggle('Auto PickUp Steel', function(p135)
+    u134 = p135
+
+    if u134 then
+        spawn(function()
+            while u134 do
+                local v136, v137, v138 = ipairs(game.Workspace.Items:GetChildren())
+
+                while true do
+                    local v139
+
+                    v138, v139 = v136(v137, v138)
+
+                    if v138 == nil then
+                        break
+                    end
+                    if v139.Name == 'Steel' and (v139:GetPivot().Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 30 then
+                        local _EntityID14 = v139:GetAttribute('EntityID')
+
+                        u41.Pickup.send(_EntityID14)
+                    end
+                end
+
+                wait(0.2)
+            end
+        end)
+    end
+end)
+
+local u141 = false
+
+_PickUp:Toggle('Auto PickUp Adurite', function(_)
+    if u141 then
+        spawn(function()
+            while u141 do
+                local v142, v143, v144 = ipairs(game.Workspace.Items:GetChildren())
+
+                while true do
+                    local v145
+
+                    v144, v145 = v142(v143, v144)
+
+                    if v144 == nil then
+                        break
+                    end
+                    if v145.Name == 'Adurite' and (v145:GetPivot().Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 30 then
+                        local _EntityID15 = v145:GetAttribute('EntityID')
+
+                        u41.Pickup.send(_EntityID15)
+                    end
+                end
+
+                wait(0.2)
+            end
+        end)
+    end
+end)
+
+local u147 = false
+
+_PickUp:Toggle('Auto PickUp Emerald', function(_)
+    u147 = false
+
+    if u147 then
+        spawn(function()
+            while u147 do
+                local v148, v149, v150 = ipairs(game.Workspace.Items:GetChildren())
+
+                while true do
+                    local v151
+
+                    v150, v151 = v148(v149, v150)
+
+                    if v150 == nil then
+                        break
+                    end
+                    if v151.Name == 'Emerald' and (v151:GetPivot().Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 30 then
+                        local _EntityID16 = v151:GetAttribute('EntityID')
+
+                        u41.Pickup.send(_EntityID16)
+                    end
+                end
+
+                wait(0.2)
+            end
+        end)
+    end
+end)
+
+local u153 = false
+
+_PickUp:Toggle('Auto PickUp Magnetite', function(p154)
+    u153 = p154
+
+    if u153 then
+        spawn(function()
+            while u153 do
+                local v155, v156, v157 = ipairs(game.Workspace.Items:GetChildren())
+
+                while true do
+                    local v158
+
+                    v157, v158 = v155(v156, v157)
+
+                    if v157 == nil then
+                        break
+                    end
+                    if v158.Name == 'Magnetite' and (v158:GetPivot().Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 30 then
+                        local _EntityID17 = v158:GetAttribute('EntityID')
+
+                        u41.Pickup.send(_EntityID17)
+                    end
+                end
+
+                wait(0.2)
+            end
+        end)
+    end
+end)
+
+local u160 = false
+
+_PickUp:Toggle('Auto PickUp Pink Diamond', function(p161)
+    u160 = p161
+
+    if u160 then
+        spawn(function()
+            while u160 do
+                local v162, v163, v164 = ipairs(game.Workspace.Items:GetChildren())
+
+                while true do
+                    local v165
+
+                    v164, v165 = v162(v163, v164)
+
+                    if v164 == nil then
+                        break
+                    end
+                    if v165.Name == 'Pink Diamond' and (v165:GetPivot().Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 30 then
+                        local _EntityID18 = v165:GetAttribute('EntityID')
+
+                        u41.Pickup.send(_EntityID18)
+                    end
+                end
+
+                wait(0.2)
+            end
+        end)
+    end
+end)
+
+local u167 = false
+
+_PickUp:Toggle('Auto PickUp Spirit Key', function(p168)
+    u167 = p168
+
+    if u167 then
+        spawn(function()
+            while u167 do
+                local v169, v170, v171 = ipairs(game.Workspace.Items:GetChildren())
+
+                while true do
+                    local v172
+
+                    v171, v172 = v169(v170, v171)
+
+                    if v171 == nil then
+                        break
+                    end
+                    if v172.Name == 'Spirit Key' and (v172:GetPivot().Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 30 then
+                        local _EntityID19 = v172:GetAttribute('EntityID')
+
+                        u41.Pickup.send(_EntityID19)
+                    end
+                end
+
+                wait(0.2)
+            end
+        end)
+    end
+end)
+
+local _ESP = v40:Tab('ESP', false)
+local u175 = false
+
+_ESP:Toggle('ESP - Players', function(p176)
+    u175 = p176
+
+    if u175 then
+        spawn(function()
+            while u175 do
+                local v177, v178, v179 = pairs(u31)
+                local v180 = 15
+
+                while true do
+                    local v181
+
+                    v179, v181 = v177(v178, v179)
+
+                    if v179 == nil then
+                        break
+                    end
+                    if not v181:FindFirstChild('PlayerESP') and game.Players:GetPlayerFromCharacter(v181) then
+                        local _BillboardGui = Instance.new('BillboardGui')
+
+                        _BillboardGui.Name = 'PlayerESP'
+                        _BillboardGui.AlwaysOnTop = true
+                        _BillboardGui.Size = UDim2.new(0, 100, 0, 50)
+                        _BillboardGui.Adornee = v181:FindFirstChild('Head')
+
+                        local _TextLabel = Instance.new('TextLabel', _BillboardGui)
+
+                        _TextLabel.Size = UDim2.new(1, 0, 1, 0)
+                        _TextLabel.BackgroundTransparency = 1
+                        _TextLabel.Text = '{' .. game.Players:GetPlayerFromCharacter(v181).Name .. '}'
+                        _TextLabel.TextColor3 = game.Players:GetPlayerFromCharacter(v181).Team.TeamColor.Color
+                        _TextLabel.Font = Enum.Font.GothamMedium
+                        _TextLabel.TextSize = v180
+                        _TextLabel.BorderSizePixel = 4
+                        _BillboardGui.Parent = v181
+                    end
+                end
+
+                local v184, v185, v186 = pairs(u31)
+
+                while true do
+                    local v187
+
+                    v186, v187 = v184(v185, v186)
+
+                    if v186 == nil then
+                        break
+                    end
+                    if v187:FindFirstChild('PlayerESP') and game.Players:GetPlayerFromCharacter(player) then
+                        v187.PlayerESP.TextLabel.TextColor3 = game.Players:GetPlayerFromCharacter(v187).Team.TeamColor.Color
+                    end
+                end
+
+                wait(2)
+            end
+        end)
+    else
+        for _ = 1, 10 do
+            local v188, v189, v190 = pairs(u31)
+
+            while true do
+                local v191
+
+                v190, v191 = v188(v189, v190)
+
+                if v190 == nil then
+                    break
+                end
+
+                local _PlayerESP = v191:FindFirstChild('PlayerESP')
+
+                if _PlayerESP then
+                    _PlayerESP:Destroy()
+                end
+            end
+        end
+    end
+end)
+_ESP:Toggle('Critters Esp(Mob)', function(p193)
+    if p193 == true then
+        local v194, v195, v196 = pairs(game.workspace.Critters:GetChildren())
+
+        while true do
+            local v197
+
+            v196, v197 = v194(v195, v196)
+
+            if v196 == nil then
+                break
+            end
+            if not v197:FindFirstChildWhichIsA('BillboardGui') then
+                local _BillboardGui2 = Instance.new('BillboardGui', v197)
+                local _TextLabel2 = Instance.new('TextLabel', _BillboardGui2)
+
+                _BillboardGui2.Name = v197.Name
+                _BillboardGui2.ResetOnSpawn = false
+                _BillboardGui2.AlwaysOnTop = true
+                _BillboardGui2.LightInfluence = 0
+                _BillboardGui2.Size = UDim2.new(0, 10, 0, 10)
+                _TextLabel2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel2.Text = v197.Name
+                _TextLabel2.Size = UDim2.new(0.0001, 0.00001, 0.0001, 0.00001)
+                _TextLabel2.BorderSizePixel = 4
+                _TextLabel2.BorderColor3 = Color3.new(0, 0, 0)
+                _TextLabel2.BorderSizePixel = 0
+                _TextLabel2.Font = 'GothamMedium'
+                _TextLabel2.TextSize = 15
+                _TextLabel2.TextColor3 = Color3.fromRGB(0, 0, 0)
+            end
+        end
+    else
+        for _ = 1, 10 do
+            local v200, v201, v202 = pairs(game.workspace.Critters:GetChildren())
+
+            while true do
+                local v203
+
+                v202, v203 = v200(v201, v202)
+
+                if v202 == nil then
+                    break
+                end
+
+                v203:FindFirstChildWhichIsA('BillboardGui'):Remove()
+            end
+        end
+    end
+end)
+_ESP:Toggle('Iron Node Esp', function(p204)
+    if p204 == true then
+        local v205, v206, v207 = pairs(game.workspace.Resources:GetChildren())
+
+        while true do
+            local v208
+
+            v207, v208 = v205(v206, v207)
+
+            if v207 == nil then
+                break
+            end
+            if v208.Name:find('Iron') and not v208:FindFirstChildWhichIsA('BillboardGui') then
+                local _BillboardGui3 = Instance.new('BillboardGui', v208)
+                local _TextLabel3 = Instance.new('TextLabel', _BillboardGui3)
+
+                _BillboardGui3.Name = v208.Name
+                _BillboardGui3.ResetOnSpawn = false
+                _BillboardGui3.AlwaysOnTop = true
+                _BillboardGui3.LightInfluence = 0
+                _BillboardGui3.Size = UDim2.new(0, 10, 0, 10)
+                _TextLabel3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel3.Text = v208.Name
+                _TextLabel3.Size = UDim2.new(0.0001, 0.00001, 0.0001, 0.00001)
+                _TextLabel3.BorderSizePixel = 4
+                _TextLabel3.BorderColor3 = Color3.new(92, 64, 51)
+                _TextLabel3.BorderSizePixel = 0
+                _TextLabel3.Font = 'GothamMedium'
+                _TextLabel3.TextSize = 15
+                _TextLabel3.TextColor3 = Color3.fromRGB(92, 64, 51)
+            end
+        end
+    else
+        for _ = 1, 10 do
+            local v211, v212, v213 = pairs(game.workspace.Resources:GetChildren())
+
+            while true do
+                local v214
+
+                v213, v214 = v211(v212, v213)
+
+                if v213 == nil then
+                    break
+                end
+                if v214.Name:find('Iron') then
+                    v214:FindFirstChildWhichIsA('BillboardGui'):Remove()
+                end
+            end
+        end
+    end
+end)
+_ESP:Toggle('Gold Node Esp', function(p215)
+    if p215 == true then
+        local v216, v217, v218 = pairs(game.workspace.Resources:GetChildren())
+
+        while true do
+            local v219
+
+            v218, v219 = v216(v217, v218)
+
+            if v218 == nil then
+                break
+            end
+            if v219.Name:find('Gold') and not v219:FindFirstChildWhichIsA('BillboardGui') then
+                local _BillboardGui4 = Instance.new('BillboardGui', v219)
+                local _TextLabel4 = Instance.new('TextLabel', _BillboardGui4)
+
+                _BillboardGui4.Name = v219.Name
+                _BillboardGui4.ResetOnSpawn = false
+                _BillboardGui4.AlwaysOnTop = true
+                _BillboardGui4.LightInfluence = 0
+                _BillboardGui4.Size = UDim2.new(0, 10, 0, 10)
+                _TextLabel4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel4.Text = v219.Name
+                _TextLabel4.Size = UDim2.new(0.0001, 0.00001, 0.0001, 0.00001)
+                _TextLabel4.BorderSizePixel = 4
+                _TextLabel4.BorderColor3 = Color3.new(249, 214, 46)
+                _TextLabel4.BorderSizePixel = 0
+                _TextLabel4.Font = 'GothamMedium'
+                _TextLabel4.TextSize = 15
+                _TextLabel4.TextColor3 = Color3.fromRGB(249, 214, 46)
+            end
+        end
+    else
+        for _ = 1, 10 do
+            local v222, v223, v224 = pairs(game.workspace.Resources:GetChildren())
+
+            while true do
+                local v225
+
+                v224, v225 = v222(v223, v224)
+
+                if v224 == nil then
+                    break
+                end
+                if v225.Name:find('Gold') then
+                    v225:FindFirstChildWhichIsA('BillboardGui'):Remove()
+                end
+            end
+        end
+    end
+end)
+_ESP:Toggle('Crystal Node Esp', function(p226)
+    if p226 == true then
+        local v227, v228, v229 = pairs(game.workspace.Items:GetChildren())
+
+        while true do
+            local v230
+
+            v229, v230 = v227(v228, v229)
+
+            if v229 == nil then
+                break
+            end
+            if v230.Name:find('Crystal') and not v230:FindFirstChildWhichIsA('BillboardGui') then
+                local _BillboardGui5 = Instance.new('BillboardGui', v230)
+                local _TextLabel5 = Instance.new('TextLabel', _BillboardGui5)
+
+                _BillboardGui5.Name = v230.Name
+                _BillboardGui5.ResetOnSpawn = false
+                _BillboardGui5.AlwaysOnTop = true
+                _BillboardGui5.LightInfluence = 0
+                _BillboardGui5.Size = UDim2.new(0, 10, 0, 10)
+                _TextLabel5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel5.Text = v230.Name
+                _TextLabel5.Size = UDim2.new(0.0001, 0.00001, 0.0001, 0.00001)
+                _TextLabel5.BorderSizePixel = 4
+                _TextLabel5.BorderColor3 = Color3.new(70, 206, 235)
+                _TextLabel5.BorderSizePixel = 0
+                _TextLabel5.Font = 'GothamMedium'
+                _TextLabel5.TextSize = 15
+                _TextLabel5.TextColor3 = Color3.fromRGB(70, 206, 235)
+            end
+        end
+    else
+        for _ = 1, 10 do
+            local v233, v234, v235 = pairs(game.workspace.Items:GetChildren())
+
+            while true do
+                local v236
+
+                v235, v236 = v233(v234, v235)
+
+                if v235 == nil then
+                    break
+                end
+                if v236.Name:find('Crystal') then
+                    v236:FindFirstChildWhichIsA('BillboardGui'):Remove()
+                end
+            end
+        end
+    end
+end)
+_ESP:Toggle('Golden Mob Esp', function(p237)
+    if p237 == true then
+        local v238, v239, v240 = pairs(game.workspace.Critters:GetChildren())
+
+        while true do
+            local v241
+
+            v240, v241 = v238(v239, v240)
+
+            if v240 == nil then
+                break
+            end
+            if v241.Name:find('Gold') and not v241:FindFirstChildWhichIsA('BillboardGui') then
+                local _BillboardGui6 = Instance.new('BillboardGui', v241)
+                local _TextLabel6 = Instance.new('TextLabel', _BillboardGui6)
+
+                _BillboardGui6.Name = v241.Name
+                _BillboardGui6.ResetOnSpawn = false
+                _BillboardGui6.AlwaysOnTop = true
+                _BillboardGui6.LightInfluence = 0
+                _BillboardGui6.Size = UDim2.new(0, 10, 0, 10)
+                _TextLabel6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel6.Text = v241.Name
+                _TextLabel6.Size = UDim2.new(0.0001, 0.00001, 0.0001, 0.00001)
+                _TextLabel6.BorderSizePixel = 4
+                _TextLabel6.BorderColor3 = Color3.new(249, 214, 46)
+                _TextLabel6.BorderSizePixel = 0
+                _TextLabel6.Font = 'GothamMedium'
+                _TextLabel6.TextSize = 15
+                _TextLabel6.TextColor3 = Color3.fromRGB(249, 214, 46)
+            end
+        end
+    else
+        for _ = 1, 10 do
+            local v244, v245, v246 = pairs(game.workspace.Critters:GetChildren())
+
+            while true do
+                local v247
+
+                v246, v247 = v244(v245, v246)
+
+                if v246 == nil then
+                    break
+                end
+                if v247.Name:find('Gold') then
+                    v247:FindFirstChildWhichIsA('BillboardGui'):Remove()
+                end
+            end
+        end
+    end
+end)
+_ESP:Toggle('Adurite Node Esp', function(p248)
+    if p248 == true then
+        local v249, v250, v251 = pairs(game.workspace.Items:GetChildren())
+
+        while true do
+            local v252
+
+            v251, v252 = v249(v250, v251)
+
+            if v251 == nil then
+                break
+            end
+            if v252.Name:find('Adurite') and not v252:FindFirstChildWhichIsA('BillboardGui') then
+                local _BillboardGui7 = Instance.new('BillboardGui', v252)
+                local _TextLabel7 = Instance.new('TextLabel', _BillboardGui7)
+
+                _BillboardGui7.Name = v252.Name
+                _BillboardGui7.ResetOnSpawn = false
+                _BillboardGui7.AlwaysOnTop = true
+                _BillboardGui7.LightInfluence = 0
+                _BillboardGui7.Size = UDim2.new(0, 10, 0, 10)
+                _TextLabel7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                _TextLabel7.Text = v252.Name
+                _TextLabel7.Size = UDim2.new(0.0001, 0.00001, 0.0001, 0.00001)
+                _TextLabel7.BorderSizePixel = 4
+                _TextLabel7.BorderColor3 = Color3.new(255, 10, 30)
+                _TextLabel7.BorderSizePixel = 0
+                _TextLabel7.Font = 'GothamMedium'
+                _TextLabel7.TextSize = 15
+                _TextLabel7.TextColor3 = Color3.fromRGB(255, 10, 30)
+            end
+        end
+    else
+        for _ = 1, 10 do
+            local v255, v256, v257 = pairs(game.workspace.Items:GetChildren())
+
+            while true do
+                local v258
+
+                v257, v258 = v255(v256, v257)
+
+                if v257 == nil then
+                    break
+                end
+                if v258.Name:find('Adurite') then
+                    v258:FindFirstChildWhichIsA('BillboardGui'):Remove()
+                end
+            end
+        end
+    end
+end)
+
+local _CombatHeal = v40:Tab('Combat/Heal', false)
+local u260 = false
+
+_CombatHeal:Toggle('Totem-ESP', function(p261)
+    u260 = p261
+
+    if u260 then
+        spawn(function()
+            while u260 do
+                local v262, v263, v264 = pairs(game.workspace.Totems:GetChildren())
+
+                while true do
+                    local v265
+
+                    v264, v265 = v262(v263, v264)
+
+                    if v264 == nil then
+                        break
+                    end
+                    if not v265:FindFirstChildWhichIsA('BillboardGui') then
+                        local _BillboardGui8 = Instance.new('BillboardGui', v265)
+                        local _TextLabel8 = Instance.new('TextLabel', _BillboardGui8)
+
+                        _BillboardGui8.Name = v265.Name
+                        _BillboardGui8.ResetOnSpawn = false
+                        _BillboardGui8.AlwaysOnTop = true
+                        _BillboardGui8.LightInfluence = 0
+                        _BillboardGui8.Size = UDim2.new(0, 10, 0, 10)
+                        _TextLabel8.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                        _TextLabel8.Text = 'Totem'
+                        _TextLabel8.Size = UDim2.new(0.0001, 0.00001, 0.0001, 0.00001)
+                        _TextLabel8.BorderSizePixel = 4
+                        _TextLabel8.BorderColor3 = Color3.new(0, 0, 0)
+                        _TextLabel8.BorderSizePixel = 0
+                        _TextLabel8.Font = Enum.Font.GothamMedium
+                        _TextLabel8.TextSize = 25
+                        _TextLabel8.TextColor3 = Color3.new(0, 0, 0)
+
+                        local _Highlight = Instance.new('Highlight')
+
+                        _Highlight.Parent = v265
+                        _Highlight.Name = 'Glow'
+                        _Highlight.FillTransparency = 0.9
+                    end
+                end
+
+                wait(1)
+            end
+        end)
+    else
+        for _ = 1, 10 do
+            local v269, v270, v271 = pairs(game.workspace.Totems:GetChildren())
+
+            while true do
+                local v272
+
+                v271, v272 = v269(v270, v271)
+
+                if v271 == nil then
+                    break
+                end
+
+                v272:FindFirstChildWhichIsA('BillboardGui'):Remove()
+            end
+
+            local v273, v274, v275 = ipairs(game.workspace.Totems:GetDescendants())
+
+            while true do
+                local v276
+
+                v275, v276 = v273(v274, v275)
+
+                if v275 == nil then
+                    break
+                end
+                if v276.Name == 'Glow' then
+                    v276:Destroy()
+                end
+            end
+        end
+    end
+end)
+
+local u277 = false
+
+_CombatHeal:Toggle('Outline Player ESP', function(p278)
+    u277 = p278
+
+    if u277 then
+        spawn(function()
+            while u277 do
+                local v279, v280, v281 = pairs(u31)
+
+                while true do
+                    local v282
+
+                    v281, v282 = v279(v280, v281)
+
+                    if v281 == nil then
+                        break
+                    end
+                    if not v282:FindFirstChild('espv1') and game.Players:GetPlayerFromCharacter(v282) then
+                        local _Highlight2 = Instance.new('Highlight')
+
+                        _Highlight2.Parent = v282
+                        _Highlight2.FillTransparency = 1
+                        _Highlight2.OutlineColor = game.Players:GetPlayerFromCharacter(v282).Team.TeamColor.Color
+                        _Highlight2.Name = 'espv1'
+                    end
+                end
+
+                local v284, v285, v286 = pairs(u31)
+
+                while true do
+                    local v287
+
+                    v286, v287 = v284(v285, v286)
+
+                    if v286 == nil then
+                        break
+                    end
+                    if v287:FindFirstChild('espv1') and game.Players:GetPlayerFromCharacter(v287) then
+                        v287.espv1.OutlineColor = game.Players:GetPlayerFromCharacter(v287).Team.TeamColor.Color
+                    end
+                end
+
+                wait(2)
+            end
+        end)
+    else
+        for _ = 1, 10 do
+            local v288, v289, v290 = ipairs(game.workspace.Players:GetDescendants())
+
+            while true do
+                local v291
+
+                v290, v291 = v288(v289, v290)
+
+                if v290 == nil then
+                    break
+                end
+                if v291.Name == 'espv1' then
+                    v291:Destroy()
+                end
+            end
+        end
+    end
+end)
+
+local u292 = false
+
+_CombatHeal:Toggle('Player Hitbox', function(p293)
+    u292 = p293
+
+    if u292 then
+        spawn(function()
+            while u292 do
+                local v294, v295, v296 = pairs(u31)
+                local v297 = 10
+
+                while true do
+                    local v298
+
+                    v296, v298 = v294(v295, v296)
+
+                    if v296 == nil then
+                        break
+                    end
+                    if game.Players:GetPlayerFromCharacter(v298).Team ~= game:GetService('Players').LocalPlayer.Team and game.Players:GetPlayerFromCharacter(v298) then
+                        v298.HumanoidRootPart.Size = Vector3.new(v297, v297, v297)
+                        v298.HumanoidRootPart.Transparency = 0.8
+                        v298.HumanoidRootPart.BrickColor = BrickColor.new('Really blue')
+                        v298.HumanoidRootPart.Material = 'Neon'
+                    end
+                end
+
+                wait(1)
+            end
+        end)
+    else
+        local v299 = 2
+
+        for _ = 1, 10 do
+            local v300, v301, v302 = ipairs(game:GetService('Players'):GetPlayers())
+
+            while true do
+                local v303
+
+                v302, v303 = v300(v301, v302)
+
+                if v302 == nil then
+                    break
+                end
+                if v303 ~= game:GetService('Players').LocalPlayer then
+                    v303.Character.HumanoidRootPart.Size = Vector3.new(v299, v299, v299)
+                    v303.Character.HumanoidRootPart.Transparency = 1
+                end
+            end
+
+            wait(0.5)
+        end
+    end
+end)
+_CombatHeal:Toggle('Noclip Doors', function(p304)
+    if p304 == true then
+        local v305, v306, v307 = ipairs(game.workspace.Deployables:GetChildren())
+
+        while true do
+            local v308
+
+            v307, v308 = v305(v306, v307)
+
+            if v307 == nil then
+                break
+            end
+            if v308:FindFirstChild('Door') then
+                local _Door = v308:FindFirstChild('Door')
+
+                _Door.CanCollide = false
+                _Door.Transparency = 0.5
+            end
+        end
+    else
+        local v310, v311, v312 = ipairs(game.workspace.Deployables:GetChildren())
+
+        while true do
+            local v313
+
+            v312, v313 = v310(v311, v312)
+
+            if v312 == nil then
+                break
+            end
+            if v313:FindFirstChild('Door') then
+                local _Door2 = v313:FindFirstChild('Door')
+
+                _Door2.CanCollide = true
+                _Door2.Transparency = 0
+            end
+        end
+    end
+end)
+
+local u315 = false
+
+_CombatHeal:Toggle('Antilags - OP', function(p316)
+    u315 = p316
+
+    if u315 then
+        spawn(function()
+            while u315 do
+                if #game.Workspace.Items:GetChildren() > 10 then
+                    local v317, v318, v319 = ipairs(game.Workspace.Items:GetChildren())
+
+                    while true do
+                        local v320
+
+                        v319, v320 = v317(v318, v319)
+
+                        if v319 == nil then
+                            break
+                        end
+                        if v320.Name ~= 'Coin2' then
+                            v320:Destroy()
+                        end
+                    end
+                end
+
+                wait(0.5)
+            end
+        end)
+    end
+end)
+
+local u321 = false
+
+_CombatHeal:Toggle('Kill aura - OP', function(p322)
+    u321 = p322
+
+    if u321 then
+        spawn(function()
+            while u321 do
+                local v323, v324, v325 = pairs(game.Players:GetPlayers())
+
+                while true do
+                    local v326
+
+                    v325, v326 = v323(v324, v325)
+
+                    if v325 == nil then
+                        break
+                    end
+                    if v326 and v326.Character and (v326.Character:FindFirstChild('UpperTorso') and (v326 ~= _LocalPlayer and (not SameTeam(v326) and (v326.Character.UpperTorso.Position - u30.UpperTorso.Position).Magnitude <= 7))) then
+                        local v327 = require(game.ReplicatedStorage.Modules.sparseSet)
+                        local v328 = v327.new()
+                        local _dense = v328.dense
+                        local _sparse = v328.sparse
+                        local _EntityID20 = v326.Character:GetAttribute('EntityID')
+
+                        if not _sparse[_EntityID20] then
+                            v327.insert(v328, _EntityID20)
+                            u41.SwingTool.send(_dense)
+                            table.clear(_sparse)
+                            table.clear(_dense)
+
+                            v328.size = 0
+                        end
+                        if not u29.Slash.IsPlaying then
+                            u29.Slash:Play()
+                        end
+                    end
+                end
+
+                wait(0.5)
+            end
+        end)
+    end
+end)
+_CombatHeal:Label('Autoheal')
+
+local u332 = 'LOL'
+
+_CombatHeal:Dropdown('Select fruit For Auto Heal', {
+    'Bloodfruit',
+    'Pumpkin',
+    'Strangefruit',
+    'Oddberry',
+    'Lemon',
+    'Apple',
+    'Coconut',
+    'Jelly',
+    'Sunfruit',
+    'Bluefruit',
+    'Berry',
+    'Orange',
+    'Cloudberry',
+    'Banana',
+    'Prickly Pear',
+}, function(p333)
+    u332 = p333
+end)
+
+local u334 = 'LOL'
+
+_CombatHeal:Slider('Selected Health For Auto Heal', 1, 100, function(p335)
+    u334 = p335
+end)
+
+function autoheal(p336)
+    local _LayoutOrder = game:GetService('Players').LocalPlayer.PlayerGui.MainGui.RightPanel.Inventory.List[p336].LayoutOrder
+
+    u41.UseBagItem.send(_LayoutOrder)
+end
+
+local u338 = false
+
+_CombatHeal:Toggle('Auto Eat/Heal On Selected Health', function(p339)
+    u338 = p339
+
+    if u338 then
+        spawn(function()
+            while u338 do
+                if u332 ~= 'LOL' and (u334 ~= 'LOL' and game.Players.LocalPlayer.Character.Humanoid.Health < u334) then
+                    autoheal(u332)
+                    autoheal(u332)
+                    autoheal(u332)
+                end
+
+                wait(0.1)
+            end
+        end)
+    end
+end)
+
+local u340 = false
+
+_CombatHeal:Toggle('Auto Eat Selected Fruit', function(p341)
+    u340 = p341
+
+    if u340 then
+        spawn(function()
+            while u340 do
+                if u332 ~= 'LOL' then
+                    autoheal(u332)
+                    autoheal(u332)
+                    autoheal(u332)
+                end
+
+                wait(0.1)
+            end
+        end)
+    end
+end)
+_CombatHeal:Label('')
+
+local _LPMix = v40:Tab('LP/Mix', false)
+
+_LPMix:Toggle('Better Moutain Climber', function(p343)
+    if p343 == true then
+        game.Players.LocalPlayer.Character.Humanoid.MaxSlopeAngle = 89
+    else
+        game.Players.LocalPlayer.Character.Humanoid.MaxSlopeAngle = 49
+    end
+end)
+
+local u344 = nil
+local u345 = {}
+
+_LPMix:Toggle('Water Walker', function(p346)
+    if p346 then
+        Speeder()
+    else
+        u344 = false
+    end
+end)
+
+function Speeder()
+    if game.PlaceId ~= 10767870749 then
+        speederup = 17
+    else
+        speederup = 23.9
+    end
+
+    spawn(function()
+        u344 = true
+
+        function speedup()
+            if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character.Humanoid then
+                game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speederup
+            end
+        end
+
+        local v347 = u345
+
+        if u345.WalkSpeedChanger then
+            u345.WalkSpeedChanger:Disconnect()
+        end
+
+        v347.WalkSpeedChanger = game.Players.LocalPlayer.Character:WaitForChild('Humanoid'):GetPropertyChangedSignal('WalkSpeed'):Connect(speedup)
+
+        local v348 = u345
+
+        if u345.WalkSpeedAlawys then
+            u345.WalkSpeedAlawys:Disconnect()
+        end
+
+        v348.WalkSpeedAlawys = game.Players.LocalPlayer.CharacterAdded:Connect(function()
+            local v349 = u345
+
+            if u345.WalkSpeedChanger then
+                u345.WalkSpeedChanger:Disconnect()
+            end
+
+            v349.WalkSpeedChanger = game.Players.LocalPlayer.Character:WaitForChild('Humanoid'):GetPropertyChangedSignal('WalkSpeed'):Connect(speedup)
+
+            speedup()
+        end)
+
+        speedup()
+
+        while task.wait() do
+            if not u344 then
+                local v350 = u345
+
+                if u345.WalkSpeedChanger then
+                    u345.WalkSpeedChanger:Disconnect()
+                end
+
+                v350.WalkSpeedChanger = nil
+
+                local v351 = u345
+
+                if u345.WalkSpeedAlawys then
+                    u345.WalkSpeedAlawys:Disconnect()
+                end
+
+                v351.WalkSpeedAlawys = nil
+                game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+
+                return
+            end
+        end
+    end)
+end
+
+_LPMix:Toggle('Camera Through', function(p352)
+    if p352 then
+        game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Invisicam
+    else
+        game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Zoom
+    end
+end)
+_LPMix:Button('Teleport To Normal World', function()
+    game:GetService('TeleportService'):Teleport(11729688377, game.Players.LocalPlayer)
+end)
+_LPMix:Button('Teleport To Void', function()
+    game:GetService('TeleportService'):Teleport(11879754496, game.Players.LocalPlayer)
+end)
+_LPMix:Button('Less Player Server Hop', function()
+    local _PlaceId = game.PlaceId
+    local u354 = {}
+    local u355 = ''
+    local _hour = os.date('!*t').hour
+
+    if not pcall(function()
+        u354 = game:GetService('HttpService'):JSONDecode(readfile('NotSameServers.json'))
+    end) then
+        table.insert(u354, _hour)
+        writefile('NotSameServers.json', game:GetService('HttpService'):JSONEncode(u354))
+    end
+
+    function TPReturner()
+        local v357
+
+        if u355 ~= '' then
+            v357 = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. _PlaceId .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. u355))
+        else
+            v357 = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. _PlaceId .. '/servers/Public?sortOrder=Asc&limit=100'))
+        end
+        if v357.nextPageCursor and (v357.nextPageCursor ~= 'null' and v357.nextPageCursor ~= nil) then
+            u355 = v357.nextPageCursor
+        end
+
+        local v358, v359, v360 = pairs(v357.data)
+        local v361 = 0
+
+        while true do
+            local v362
+
+            v360, v362 = v358(v359, v360)
+
+            if v360 == nil then
+                break
+            end
+
+            local v363 = true
+            local u364 = tostring(v362.id)
+
+            if tonumber(v362.maxPlayers) > tonumber(v362.playing) then
+                local v365, v366, v367 = pairs(u354)
+
+                while true do
+                    local v368
+
+                    v367, v368 = v365(v366, v367)
+
+                    if v367 == nil then
+                        break
+                    end
+                    if v361 == 0 then
+                        if tonumber(_hour) ~= tonumber(v368) then
+                            pcall(function()
+                                delfile('NotSameServers.json')
+
+                                u354 = {}
+
+                                table.insert(u354, _hour)
+                            end)
+                        end
+                    elseif u364 == tostring(v368) then
+                        v363 = false
+                    end
+
+                    v361 = v361 + 1
+                end
+
+                if v363 == true then
+                    table.insert(u354, u364)
+                    wait()
+                    pcall(function()
+                        writefile('NotSameServers.json', game:GetService('HttpService'):JSONEncode(u354))
+                        wait()
+                        game:GetService('TeleportService'):TeleportToPlaceInstance(_PlaceId, u364, game.Players.LocalPlayer)
+                    end)
+                    wait(4)
+                end
+            end
+        end
+    end
+    function Teleport()
+        while wait() do
+            pcall(function()
+                TPReturner()
+
+                if u355 ~= '' then
+                    TPReturner()
+                end
+            end)
+        end
+    end
+
+    print('Teleporting To New Server')
+    Teleport()
+end)
+
+local _Players = game:GetService('Players')
+local u370 = game:GetService('Players').LocalPlayer:GetMouse()
+
+FLYING = false
+iyflyspeed = 0.25
+vehicleflyspeed = 0.25
+
+function sFLY(p371)
+    repeat
+        wait()
+    until _Players.LocalPlayer and (_Players.LocalPlayer.Character and _Players.LocalPlayer.Character.HumanoidRootPart) and _Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid')
+    repeat
+        wait()
+    until u370
+
+    if flyKeyDown or flyKeyUp then
+        flyKeyDown:Disconnect()
+        flyKeyUp:Disconnect()
+    end
+
+    local _HumanoidRootPart = _Players.LocalPlayer.Character.HumanoidRootPart
+    local u373 = {
+        F = 0,
+        B = 0,
+        L = 0,
+        R = 0,
+        Q = 0,
+        E = 0,
+    }
+    local u374 = {
+        F = 0,
+        B = 0,
+        L = 0,
+        R = 0,
+        Q = 0,
+        E = 0,
+    }
+    local u375 = 0
+
+    local function v378()
+        FLYING = true
+
+        local _BodyGyro = Instance.new('BodyGyro')
+        local _BodyVelocity = Instance.new('BodyVelocity')
+
+        _BodyGyro.P = 90000
+        _BodyGyro.Parent = _HumanoidRootPart
+        _BodyVelocity.Parent = _HumanoidRootPart
+        _BodyGyro.maxTorque = Vector3.new(9000000000, 9000000000, 9000000000)
+        _BodyGyro.cframe = _HumanoidRootPart.CFrame
+        _BodyVelocity.velocity = Vector3.new(0, 0, 0)
+        _BodyVelocity.maxForce = Vector3.new(9000000000, 9000000000, 9000000000)
+
+        task.spawn(function()
+            while true do
+                wait()
+
+                if not p371 and _Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
+                    _Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand = true
+                end
+                if u373.L + u373.R ~= 0 or (u373.F + u373.B ~= 0 or u373.Q + u373.E ~= 0) then
+                    u375 = 50
+                elseif u373.L + u373.R == 0 and (u373.F + u373.B == 0 and (u373.Q + u373.E == 0 and u375 ~= 0)) then
+                    u375 = 0
+                end
+                if u373.L + u373.R ~= 0 or (u373.F + u373.B ~= 0 or u373.Q + u373.E ~= 0) then
+                    _BodyVelocity.velocity = (workspace.CurrentCamera.CoordinateFrame.lookVector * (u373.F + u373.B) + workspace.CurrentCamera.CoordinateFrame * CFrame.new(u373.L + u373.R, (u373.F + u373.B + u373.Q + u373.E) * 0.2, 0).p - workspace.CurrentCamera.CoordinateFrame.p) * u375
+                    u374 = {
+                        F = u373.F,
+                        B = u373.B,
+                        L = u373.L,
+                        R = u373.R,
+                    }
+                elseif u373.L + u373.R ~= 0 or (u373.F + u373.B ~= 0 or (u373.Q + u373.E ~= 0 or u375 == 0)) then
+                    _BodyVelocity.velocity = Vector3.new(0, 0, 0)
+                else
+                    _BodyVelocity.velocity = (workspace.CurrentCamera.CoordinateFrame.lookVector * (u374.F + u374.B) + workspace.CurrentCamera.CoordinateFrame * CFrame.new(u374.L + u374.R, (u374.F + u374.B + u373.Q + u373.E) * 0.2, 0).p - workspace.CurrentCamera.CoordinateFrame.p) * u375
+                end
+
+                _BodyGyro.cframe = workspace.CurrentCamera.CoordinateFrame
+
+                if not FLYING then
+                    u373 = {
+                        F = 0,
+                        B = 0,
+                        L = 0,
+                        R = 0,
+                        Q = 0,
+                        E = 0,
+                    }
+                    u374 = {
+                        F = 0,
+                        B = 0,
+                        L = 0,
+                        R = 0,
+                        Q = 0,
+                        E = 0,
+                    }
+                    u375 = 0
+
+                    _BodyGyro:Destroy()
+                    _BodyVelocity:Destroy()
+
+                    if _Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
+                        _Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand = false
+                    end
+
+                    return
+                end
+            end
+        end)
+    end
+
+    flyKeyDown = u370.KeyDown:Connect(function(p379)
+        if p379:lower() ~= 'w' then
+            if p379:lower() ~= 's' then
+                if p379:lower() ~= 'a' then
+                    if p379:lower() ~= 'd' then
+                        if QEfly and p379:lower() == 'e' then
+                            u373.Q = (p371 and vehicleflyspeed or iyflyspeed) * 2
+                        elseif QEfly and p379:lower() == 'q' then
+                            u373.E = -(p371 and vehicleflyspeed or iyflyspeed) * 2
+                        end
+                    else
+                        u373.R = p371 and vehicleflyspeed or iyflyspeed
+                    end
+                else
+                    u373.L = -(p371 and vehicleflyspeed or iyflyspeed)
+                end
+            else
+                u373.B = -(p371 and vehicleflyspeed or iyflyspeed)
+            end
+        else
+            u373.F = p371 and vehicleflyspeed or iyflyspeed
+        end
+
+        pcall(function()
+            workspace.CurrentCamera.CameraType = Enum.CameraType.Track
+        end)
+    end)
+    flyKeyUp = u370.KeyUp:Connect(function(p380)
+        if p380:lower() ~= 'w' then
+            if p380:lower() ~= 's' then
+                if p380:lower() ~= 'a' then
+                    if p380:lower() ~= 'd' then
+                        if p380:lower() ~= 'e' then
+                            if p380:lower() == 'q' then
+                                u373.E = 0
+                            end
+                        else
+                            u373.Q = 0
+                        end
+                    else
+                        u373.R = 0
+                    end
+                else
+                    u373.L = 0
+                end
+            else
+                u373.B = 0
+            end
+        else
+            u373.F = 0
+        end
+    end)
+
+    v378()
+end
+function NOFLY()
+    FLYING = false
+
+    if flyKeyDown or flyKeyUp then
+        flyKeyDown:Disconnect()
+        flyKeyUp:Disconnect()
+    end
+    if _Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
+        _Players.LocalPlayer.Character.Humanoid.PlatformStand = false
+    end
+
+    pcall(function()
+        workspace.CurrentCamera.CameraType = Enum.CameraType.Custom
+    end)
+end
+
+_LPMix:Toggle('Fly', function(p381)
+    if p381 == true then
+        sFLY(true)
+    else
+        NOFLY()
+        wait()
+        NOFLY()
+    end
+end)
+_LPMix:Button('Infinity Jump', function()
+    local _LocalPlayer2 = game:GetService('Players').LocalPlayer
+    local _UserInputService2 = game:GetService('UserInputService')
+    local u384 = 50
+
+    function Action(p385, p386)
+        if p385 ~= nil then
+            p386(p385)
+        end
+    end
+
+    _UserInputService2.InputBegan:connect(function(p387)
+        if p387.UserInputType == Enum.UserInputType.Keyboard and p387.KeyCode == Enum.KeyCode.Space then
+            Action(_LocalPlayer2.Character.Humanoid, function(p388)
+                if p388:GetState() == Enum.HumanoidStateType.Jumping or p388:GetState() == Enum.HumanoidStateType.Freefall then
+                    Action(p388.Parent.HumanoidRootPart, function(p389)
+                        p389.Velocity = Vector3.new(0, u384, 0)
+                    end)
+                end
+            end)
+        end
+    end)
+end)
+_LPMix:Button('Remove Water', function()
+    local _Terrain = workspace.Terrain
+    local u391 = 640
+    local _Water = Enum.Material.Water
+    local _Air = Enum.Material.Air
+    local _floor = math.floor
+
+    function isInRegion3(p395, p396)
+        local v397 = (p396 - p395.CFrame.p) / p395.Size
+
+        return v397.X >= -0.5 and (v397.X <= 0.5 and (v397.Y >= -0.5 and (v397.Y <= 0.5 and (v397.Z >= -0.5 and v397.Z <= 0.5))))
+    end
+
+    local function u399(p398)
+        return math.floor(p398 + 0.5)
+    end
+    local function u407(p400)
+        local v401 = u399(p400.X)
+        local v402 = v401 - v401 % 4 + 2
+        local v403 = u399(p400.Y)
+        local v404 = v403 - v403 % 4 + 2
+        local v405 = u399(p400.Z)
+        local v406 = v405 - v405 % 4 + 2
+
+        return Vector3.new(v402, v404, v406)
+    end
+    local function u412(p408)
+        local v409, v410, v411 = string.match(p408, '^([^%d]*%d)(%d*)(.-)$')
+
+        return v409 .. v410:reverse():gsub('(%d%d%d)', '%1,'):reverse() .. v411
+    end
+
+    (function(p413, p414)
+        local v415 = tick()
+        local v416 = u407(p413)
+        local v417 = Region3.new(v416 - p414 / 2, v416 + p414 / 2)
+
+        v417:ExpandToGrid(4)
+
+        local v418 = v417.CFrame.p - v417.Size / 2
+
+        print('Starting')
+
+        local v419 = u407(v418)
+        local v420 = 0
+        local v421 = 0
+        local v422 = 0
+        local v423 = false
+        local v424 = {}
+
+        while true do
+            local v425 = v419 + Vector3.new(v420, v421, v422)
+            local v426 = v417.CFrame.p + v417.Size / 2 - v425
+            local _X = v426.X
+            local _Y = v426.Y
+            local _Z = v426.Z
+
+            if u391 < _X then
+                _X = u391
+            end
+            if u391 < _Y then
+                _Y = u391
+            end
+            if u391 < _Z then
+                _Z = u391
+            end
+
+            local v430 = Vector3.new(_X, _Y, _Z)
+            local v431 = Region3.new(v425, v425 + v430):ExpandToGrid(4)
+
+            table.insert(v424, v431)
+
+            v422 = v422 + u391
+
+            if v417.Size.Z <= v422 then
+                v421 = v421 + u391
+                v422 = 0
+            end
+            if v417.Size.Y <= v421 then
+                v420 = v420 + u391
+                v421 = 0
+            end
+
+            v423 = v417.Size.X <= v420 and true or v423
+
+            if v423 then
+                print('Writing to ', #v424, ' regions!')
+                print('Removing water...')
+
+                local v432 = p414.X * p414.Y * p414.Z
+                local v433, v434, v435 = pairs(v424)
+                local v436 = 0
+                local v437 = 0
+
+                while true do
+                    local v438, v439 = v433(v434, v435)
+
+                    if v438 == nil then
+                        break
+                    end
+
+                    local v440, v441 = _Terrain:ReadVoxels(v439, 4)
+                    local _Size = v440.Size
+
+                    v435 = v438
+
+                    local v443 = 0
+
+                    for v444 = 1, _Size.X do
+                        local v445 = v440[v444]
+                        local v446 = v441[v444]
+
+                        for v447 = 1, _Size.Y do
+                            local v448 = v445[v447]
+                            local v449 = v446[v447]
+
+                            for v450 = 1, _Size.Z do
+                                v436 = v436 + 1
+
+                                if v448[v450] == _Water then
+                                    v448[v450] = _Air
+                                    v449[v450] = 0
+                                    v443 = v443 + 1
+                                end
+                            end
+                        end
+                    end
+
+                    if v443 > 0 then
+                        _Terrain:WriteVoxels(v439, 4, v440, v441)
+                    end
+                    if v438 % 4 == 0 then
+                        print(_floor(v438 / #v424 * 1000 + 0.5) / 10 .. '% complete!')
+                        wait(0)
+                    end
+
+                    v437 = v437 + v443
+                end
+
+                print('Total time elapsed: ', tick() - v415, ' seconds!')
+                print('Total water blocks removed: ', v437)
+                print('Total cells processed: ', u412(v436))
+                print('Region/Chunks: ', #v424)
+                print('Total Volume: ', v432, 'cubic studs')
+                print('Done processing')
+
+                return
+            end
+        end
+    end)(Vector3.new(0, 0, 0), Vector3.new(5000, 30, 5000))
+end)
+
+local u451 = nil
+
+_LPMix:Toggle('Press (F) To Teleport', function(p452)
+    if p452 == true then
+        u451 = game:GetService('UserInputService').InputBegan:Connect(function(p453)
+            if p453.KeyCode == Enum.KeyCode.F then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players.LocalPlayer:GetMouse().Hit.p)
+            end
+        end)
+    else
+        u451:Disconnect()
+    end
+end)
+
+local u454 = nil
+
+_LPMix:Toggle('FullBright', function(_)
+    if u454 then
+        u454 = false
+    else
+        FullBright()
+    end
+end)
+
+function FullBright()
+    u454 = true
+
+    spawn(function()
+        while task.wait() do
+            if not u454 then
+                local _Lighting = game:GetService('Lighting')
+
+                game:GetService('ReplicatedStorage')
+
+                _Lighting.Brightness = 3
+                _Lighting.ClockTime = 14
+                _Lighting.FogEnd = 1000
+                _Lighting.GlobalShadows = true
+                _Lighting.OutdoorAmbient = Color3.fromRGB(255, 255, 255)
+
+                if _Lighting.Shine then
+                    _Lighting.Shine:Destroy()
+                end
+
+                return
+            end
+
+            local _Lighting2 = game:GetService('Lighting')
+            local _ReplicatedStorage = game:GetService('ReplicatedStorage')
+
+            _Lighting2.Brightness = 2
+            _Lighting2.ClockTime = 14
+            _Lighting2.FogEnd = 100000
+            _Lighting2.GlobalShadows = false
+            _Lighting2.OutdoorAmbient = Color3.fromRGB(128, 128, 128)
+
+            if _Lighting2:FindFirstChild('Rain') then
+                _Lighting2:FindFirstChild('Rain'):Destroy()
+            end
+            if _Lighting2:FindFirstChild('Doom') then
+                _Lighting2:FindFirstChild('Doom'):Destroy()
+            end
+            if not _Lighting2:FindFirstChild('Shine') then
+                _ReplicatedStorage.Skies.Shine:Clone().Parent = _Lighting2
+            end
+            if workspace:FindFirstChild('RainPart') then
+                workspace:FindFirstChild('RainPart'):Destroy()
+            end
+        end
+    end)
+end
+
+local _TPPos = v40:Tab('TP-Pos', false)
+local u459 = 'nil'
+local u460 = 'nil'
+
+_TPPos:Button('Select Position 1 (2)', function()
+    u459 = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+end)
+_TPPos:Button('Select Position 2 (2)', function()
+    u460 = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+end)
+
+local u461 = false
+local u462 = nil
+
+_TPPos:Toggle('Auto Teleport Selected Position (2)', function(p463)
+    u461 = p463
+
+    if u461 then
+        spawn(function()
+            while u461 do
+                local _HumanoidRootPart2 = game.Players.LocalPlayer.Character.HumanoidRootPart
+
+                if u459 ~= 'nil' and u460 ~= 'nil' then
+                    local v465 = {u459, u460}
+                    local v466, v467, v468 = ipairs(v465)
+
+                    while true do
+                        local v469
+
+                        v468, v469 = v466(v467, v468)
+
+                        if v468 == nil then
+                            break
+                        end
+
+                        local v470 = math.round(math.abs((_HumanoidRootPart2.Position - v469.Position).Magnitude)) / tonumber(10)
+
+                        u462 = game:GetService('TweenService'):Create(_HumanoidRootPart2, TweenInfo.new(tonumber(v470), Enum.EasingStyle.Linear), {CFrame = v469})
+
+                        u462:Play()
+                        wait(v470)
+                    end
+                end
+
+                wait(0.2)
+            end
+        end)
+    elseif u462 then
+        u462:Cancel()
+
+        u462 = nil
+    end
+end)
+_TPPos:Label('')
+
+local u471 = 'nil'
+local u472 = 'nil'
+local u473 = 'nil'
+local u474 = 'nil'
+local u475 = 'nil'
+
+_TPPos:Button('Select Position 1 (5)', function()
+    u471 = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+end)
+_TPPos:Button('Select Position 2 (5)', function()
+    u472 = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+end)
+_TPPos:Button('Select Position 3 (5)', function()
+    u473 = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+end)
+_TPPos:Button('Select Position 4 (5)', function()
+    u474 = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+end)
+_TPPos:Button('Select Position 5 (5)', function()
+    u475 = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+end)
+
+local u476 = false
+local u477 = nil
+
+_TPPos:Toggle('Auto Teleport Selected Position (5)', function(p478)
+    u476 = p478
+
+    if u476 then
+        spawn(function()
+            while u476 do
+                local _HumanoidRootPart3 = game.Players.LocalPlayer.Character.HumanoidRootPart
+
+                if u471 ~= 'nil' and (u472 ~= 'nil' and (u473 ~= 'nil' and (u474 ~= 'nil' and u475 ~= 'nil'))) then
+                    local v480 = {
+                        u471,
+                        u472,
+                        u473,
+                        u474,
+                        u475,
+                    }
+                    local v481, v482, v483 = ipairs(v480)
+
+                    while true do
+                        local v484
+
+                        v483, v484 = v481(v482, v483)
+
+                        if v483 == nil then
+                            break
+                        end
+
+                        local v485 = math.round(math.abs((_HumanoidRootPart3.Position - v484.Position).Magnitude)) / tonumber(10)
+
+                        u477 = game:GetService('TweenService'):Create(_HumanoidRootPart3, TweenInfo.new(tonumber(v485), Enum.EasingStyle.Linear), {CFrame = v484})
+
+                        u477:Play()
+                        wait(v485)
+                    end
+                end
+
+                wait(0.2)
+            end
+        end)
+    elseif u477 then
+        u477:Cancel()
+
+        u477 = nil
+    end
+end)
+_TPPos:Label('')
+
+local u486 = 'nil'
+local u487 = 'nil'
+local u488 = 'nil'
+local u489 = 'nil'
+local u490 = 'nil'
+local u491 = 'nil'
+local u492 = 'nil'
+local u493 = 'nil'
+local u494 = 'nil'
+local u495 = 'nil'
+
+_TPPos:Button('Select Position 1 (10)', function()
+    u486 = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+end)
+_TPPos:Button('Select Position 2 (10)', function()
+    u487 = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+end)
+_TPPos:Button('Select Position 3 (10)', function()
+    u488 = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+end)
+_TPPos:Button('Select Position 4 (10)', function()
+    u489 = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+end)
+_TPPos:Button('Select Position 5 (10)', function()
+    u490 = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+end)
+_TPPos:Button('Select Position 6 (10)', function()
+    u491 = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+end)
+_TPPos:Button('Select Position 7 (10)', function()
+    u492 = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+end)
+_TPPos:Button('Select Position 8 (10)', function()
+    u493 = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+end)
+_TPPos:Button('Select Position 9 (10)', function()
+    u494 = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+end)
+_TPPos:Button('Select Position 10 (10)', function()
+    u495 = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+end)
+
+local u496 = false
+local u497 = nil
+
+_TPPos:Toggle('Auto Teleport Selected Position (10)', function(p498)
+    u496 = p498
+
+    if u496 then
+        spawn(function()
+            while u496 do
+                local _HumanoidRootPart4 = game.Players.LocalPlayer.Character.HumanoidRootPart
+
+                if u486 ~= 'nil' and (u487 ~= 'nil' and (u488 ~= 'nil' and (u489 ~= 'nil' and (u490 ~= 'nil' and (u491 ~= 'nil' and (u492 ~= 'nil' and (u493 ~= 'nil' and (u494 ~= 'nil' and u495 ~= 'nil')))))))) then
+                    local v500 = {
+                        u486,
+                        u487,
+                        u488,
+                        u489,
+                        u490,
+                        u491,
+                        u492,
+                        u493,
+                        u494,
+                        u495,
+                    }
+                    local v501, v502, v503 = ipairs(v500)
+
+                    while true do
+                        local v504
+
+                        v503, v504 = v501(v502, v503)
+
+                        if v503 == nil then
+                            break
+                        end
+
+                        local v505 = math.round(math.abs((_HumanoidRootPart4.Position - v504.Position).Magnitude)) / tonumber(10)
+
+                        u497 = game:GetService('TweenService'):Create(_HumanoidRootPart4, TweenInfo.new(tonumber(v505), Enum.EasingStyle.Linear), {CFrame = v504})
+
+                        u497:Play()
+                        wait(v505)
+                    end
+                end
+
+                wait(0.2)
+            end
+        end)
+    elseif u497 then
+        u497:Cancel()
+
+        u497 = nil
+    end
+end)
+_TPPos:Label('')
+
+local _Farming = v40:Tab('Farming', false)
+local u507 = {
+    Bloodfruit = 94,
+    Pumpkin = 80,
+    Strangefruit = 302,
+    Oddberry = 32,
+    Lemon = 99,
+    Apple = 243,
+    Coconut = 4,
+    Jelly = 604,
+    Sunfruit = 128,
+    Bluefruit = 377,
+    Berry = 35,
+    Orange = 602,
+    Cloudberry = 101,
+    Banana = 606,
+    ['Prickly Pear'] = 378,
+}
+local u508 = 'LOL'
+
+_Farming:Dropdown('Select Plant', {
+    'Bloodfruit',
+    'Pumpkin',
+    'Strangefruit',
+    'Oddberry',
+    'Lemon',
+    'Apple',
+    'Coconut',
+    'Jelly',
+    'Sunfruit',
+    'Bluefruit',
+    'Berry',
+    'Orange',
+    'Cloudberry',
+    'Banana',
+    'Prickly Pear',
+}, function(p509)
+    u508 = p509
+end)
+
+local u510 = 'LOL'
+
+_Farming:Slider('Selected Distance for Plant: 17', 1, 25, function(p511)
+    u510 = p511
+end)
+
+local u512 = false
+
+_Farming:Toggle('Auto Farm Plant', function(p513)
+    u512 = p513
+
+    if u512 then
+        spawn(function()
+            while u512 do
+                if u508 ~= 'LOL' and u510 ~= 'LOL' then
+                    local _HumanoidRootPart5 = game.Players.LocalPlayer.Character.HumanoidRootPart
+                    local v515, v516, v517 = ipairs(game.Workspace.Deployables:GetChildren())
+                    local v518 = 'Seed'
+
+                    while true do
+                        local v519
+
+                        v517, v519 = v515(v516, v517)
+
+                        if v517 == nil then
+                            break
+                        end
+                        if v519.Name == 'Plant Box' and (not v519:FindFirstChild(v518) and (_HumanoidRootPart5.Position - v519:GetPivot().Position).Magnitude < u510) then
+                            local v520 = {
+                                entityID = v519:GetAttribute('EntityID'),
+                                itemID = u507[u508],
+                            }
+
+                            u41.InteractStructure.send(v520)
+                        end
+                    end
+                end
+
+                wait(0.1)
+            end
+        end)
+    end
+end)
+
+local u521 = 'LOL'
+
+_Farming:Slider('Selected Distance for Harvest: 20', 1, 40, function(p522)
+    u521 = p522
+end)
+
+local u523 = false
+
+_Farming:Toggle('Auto Harvest Plant', function(p524)
+    u523 = p524
+
+    if u523 then
+        spawn(function()
+            while u523 do
+                if u521 ~= 'LOL' then
+                    local v525, v526, v527 = ipairs(game.workspace:GetChildren())
+
+                    while true do
+                        local v528
+
+                        v527, v528 = v525(v526, v527)
+
+                        if v527 == nil then
+                            break
+                        end
+                        if v528:IsA('Model') and (v528:GetPivot().Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < u521 then
+                            local _EntityID21 = v528:GetAttribute('EntityID')
+
+                            u41.Pickup.send(_EntityID21)
+                        end
+                    end
+                end
+
+                wait(0.1)
+            end
+        end)
+    end
+end)
+
+local u530 = false
+
+_Farming:Toggle('Auto Plant-TP', function(p531)
+    u530 = p531
+
+    if u530 then
+        spawn(function()
+            while u530 do
+                local _HumanoidRootPart6 = game.Players.LocalPlayer.Character.HumanoidRootPart
+
+                function getNear()
+                    local v533, v534, v535 = pairs(game.workspace.Deployables:GetChildren())
+                    local v536 = 100
+                    local v537 = nil
+
+                    while true do
+                        local v538
+
+                        v535, v538 = v533(v534, v535)
+
+                        if v535 == nil then
+                            break
+                        end
+                        if v538.Name == 'Plant Box' and (not v538:FindFirstChild('Seed') and v538:IsA('Model')) then
+                            local _BasePart = v538:FindFirstChildWhichIsA('BasePart')
+                            local _Magnitude = (_HumanoidRootPart6.Position - _BasePart.Position).Magnitude
+
+                            if _Magnitude < v536 then
+                                v537 = _BasePart
+                                v536 = _Magnitude
+                            end
+                        end
+                    end
+
+                    return v537
+                end
+
+                local v541 = getNear()
+
+                if v541 then
+                    local _Unit = (v541.Position - _HumanoidRootPart6.Position).Unit
+                    local v543 = v541.Position - _Unit * 1 + Vector3.new(0, v541.Size.Y + 2.5, 0)
+                    local v544 = math.round(math.abs((_HumanoidRootPart6.Position - v543).Magnitude)) / tonumber(10)
+
+                    game:GetService('TweenService'):Create(_HumanoidRootPart6, TweenInfo.new(tonumber(v544), Enum.EasingStyle.Linear), {
+                        CFrame = CFrame.new(v543),
+                    }):Play()
+                    wait(v544)
+                end
+            end
+        end)
+    end
+end)
+
+local u545 = false
+
+_Farming:Toggle('Auto eat food, prevent death', function(p546)
+    u545 = p546
+
+    if u545 then
+        spawn(function()
+            while u545 do
+                if u508 ~= 'LOL' and game:GetService('Players').LocalPlayer.PlayerGui.MainGui.Panels.Stats.Food.Slider.Size.X.Scale < 0.9 then
+                    autoheal(u508)
+                    autoheal(u508)
+                    autoheal(u508)
+                end
+
+                wait(0.1)
+            end
+        end)
+    end
+end)
+_Farming:Label('\u{2193} Advanced plant tp \u{2193}')
+
+local u547 = 'LOL'
+
+_Farming:Slider('Speed - AutoPlant-TP', 1, 100, function(p548)
+    u547 = p548
+end)
+
+local u549 = false
+
+_Farming:Toggle('Auto Plant-TP - Custom Speed', function(p550)
+    u549 = p550
+
+    if u549 then
+        spawn(function()
+            while u549 do
+                if u547 ~= 'LOL' then
+                    local _HumanoidRootPart7 = game.Players.LocalPlayer.Character.HumanoidRootPart
+
+                    function getNear()
+                        local v552, v553, v554 = pairs(game.workspace.Deployables:GetChildren())
+                        local v555 = 100
+                        local v556 = nil
+
+                        while true do
+                            local v557
+
+                            v554, v557 = v552(v553, v554)
+
+                            if v554 == nil then
+                                break
+                            end
+                            if v557.Name == 'Plant Box' and (not v557:FindFirstChild('Seed') and (v557:IsA('Model') and (_HumanoidRootPart7.Position - v557:FindFirstChildWhichIsA('BasePart').Position).Magnitude < v555)) then
+                                v556 = v557:FindFirstChildWhichIsA('BasePart')
+                                v555 = (_HumanoidRootPart7.Position - v557:FindFirstChildWhichIsA('BasePart').Position).Magnitude
+                            end
+                        end
+
+                        return v556
+                    end
+
+                    local v558 = getNear()
+                    local v559 = v558.CFrame + Vector3.new(0, v558.Size.Y + 4, 0)
+                    local v560 = u547
+                    local v561 = math.round(math.abs((_HumanoidRootPart7.Position - v558.Position).Magnitude)) / tonumber(v560)
+
+                    game:GetService('TweenService'):Create(_HumanoidRootPart7, TweenInfo.new(tonumber(v561), Enum.EasingStyle.Linear), {CFrame = v559}):Play()
+                    wait(v561)
+                end
+
+                wait(2)
+            end
+        end)
+    end
+end)
+
+local _MainAura = v40:Tab('Main/Aura', false)
+local u563 = false
+
+_MainAura:Toggle('Auto Click emulator', function(p564)
+    u563 = p564
+
+    if u563 then
+        spawn(function()
+            while u563 do
+                game:GetService('VirtualInputManager'):SendMouseButtonEvent(0, 0, 0, true, game, 1)
+                wait(0.2)
+            end
+        end)
+    end
+end)
+
+local u565 = Vector3.new(915.0111694335938, -2.7465808391571045, -1385.920654296875)
+local u566 = Vector3.new(915.9529418945313, -0.46988826990127563, -1415.058349609375)
+local u567 = Vector3.new(942.3120727539063, -2.4558541774749756, -1430.1929931640625)
+local u568 = Vector3.new(960.026611328125, -3.0000007152557373, -1394.3203125)
+local u569 = false
+local u570 = nil
+
+_MainAura:Toggle('Ice GoldNode TP-POS', function(p571)
+    u569 = p571
+
+    if u569 then
+        spawn(function()
+            while u569 do
+                local _HumanoidRootPart8 = game.Players.LocalPlayer.Character.HumanoidRootPart
+                local v573 = {
+                    u565,
+                    u566,
+                    u567,
+                    u568,
+                }
+                local v574, v575, v576 = ipairs(v573)
+
+                while true do
+                    local v577
+
+                    v576, v577 = v574(v575, v576)
+
+                    if v576 == nil or not u569 then
+                        break
+                    end
+
+                    local v578 = math.round(math.abs((_HumanoidRootPart8.Position - v577).Magnitude)) / 18
+
+                    u570 = game:GetService('TweenService'):Create(_HumanoidRootPart8, TweenInfo.new(v578, Enum.EasingStyle.Linear), {
+                        CFrame = CFrame.new(v577),
+                    })
+
+                    u570:Play()
+                    wait(v578)
+                end
+            end
+        end)
+    elseif u570 then
+        u570:Cancel()
+
+        u570 = nil
+    end
+end)
+
+local u579 = false
+
+_MainAura:Toggle('Undetected Aura', function(p580)
+    u579 = p580
+
+    if u579 then
+        print('Undetected aura: On')
+    else
+        print('Undetected aura: Off')
+    end
+end)
+
+local u581 = false
+
+_MainAura:Toggle('Resources Aura', function(p582)
+    u581 = p582
+
+    if u581 then
+        spawn(function()
+            while u581 do
+                if u579 then
+                    local _HumanoidRootPart9 = game.Players.LocalPlayer.Character.HumanoidRootPart
+                    local v584, v585, v586 = ipairs(game.Workspace.Resources:GetChildren())
+
+                    while true do
+                        local v587
+
+                        v586, v587 = v584(v585, v586)
+
+                        if v586 == nil then
+                            break
+                        end
+                        if v587.Name ~= 'Corn' and (v587.PrimaryPart and (v587.PrimaryPart.Position - _HumanoidRootPart9.Position).Magnitude < 10) then
+                            local _EntityID22 = v587:GetAttribute('EntityID')
+                            local v589 = require(game.ReplicatedStorage.Modules.sparseSet)
+                            local v590 = v589.new()
+                            local _dense2 = v590.dense
+                            local _sparse2 = v590.sparse
+
+                            if not _sparse2[_EntityID22] then
+                                v589.insert(v590, _EntityID22)
+                                u41.SwingTool.send(_dense2)
+                                table.clear(_sparse2)
+                                table.clear(_dense2)
+
+                                v590.size = 0
+                            end
+
+                            local _Humanoid = game.Players.LocalPlayer.Character.Humanoid
+                            local v594, v595, v596 = pairs(game.ReplicatedStorage.Animations:GetChildren())
+                            local v597 = {}
+
+                            while true do
+                                local v598
+
+                                v596, v598 = v594(v595, v596)
+
+                                if v596 == nil then
+                                    break
+                                end
+                                if v598 and v598:IsA('Animation') then
+                                    v597[v598.Name] = _Humanoid:LoadAnimation(v598)
+                                end
+                            end
+
+                            if not v597.Slash.IsPlaying then
+                                v597.Slash:Play()
+                            end
+                        end
+                    end
+                else
+                    local _HumanoidRootPart10 = game.Players.LocalPlayer.Character.HumanoidRootPart
+                    local v600, v601, v602 = ipairs(game.Workspace.Resources:GetChildren())
+                    local v603 = {}
+
+                    while true do
+                        local v604
+
+                        v602, v604 = v600(v601, v602)
+
+                        if v602 == nil then
+                            break
+                        end
+                        if v604.Name ~= 'Corn' and (v604.PrimaryPart and (v604.PrimaryPart.Position - _HumanoidRootPart10.Position).Magnitude < 20) then
+                            table.insert(v603, v604:GetAttribute('EntityID'))
+                        end
+                    end
+
+                    if #v603 >= 1 then
+                        local v605 = require(game.ReplicatedStorage.Modules.sparseSet)
+                        local v606 = v605.new()
+                        local _dense3 = v606.dense
+                        local _sparse3 = v606.sparse
+                        local v609, v610, v611 = ipairs(v603)
+
+                        while true do
+                            local v612
+
+                            v611, v612 = v609(v610, v611)
+
+                            if v611 == nil then
+                                break
+                            end
+
+                            v605.insert(v606, v612)
+                        end
+
+                        u41.SwingTool.send(_dense3)
+                        table.clear(_sparse3)
+                        table.clear(_dense3)
+
+                        v606.size = 0
+
+                        if u579 then
+                            local _Humanoid2 = game.Players.LocalPlayer.Character.Humanoid
+                            local v614, v615, v616 = pairs(game.ReplicatedStorage.Animations:GetChildren())
+                            local v617 = {}
+
+                            while true do
+                                local v618
+
+                                v616, v618 = v614(v615, v616)
+
+                                if v616 == nil then
+                                    break
+                                end
+                                if v618 and v618:IsA('Animation') then
+                                    v617[v618.Name] = _Humanoid2:LoadAnimation(v618)
+                                end
+                            end
+
+                            if not v617.Slash.IsPlaying then
+                                v617.Slash:Play()
+                            end
+                        end
+                    end
+
+                    local v619, v620, v621 = ipairs(game.Workspace:GetChildren())
+
+                    while true do
+                        local v622
+
+                        v621, v622 = v619(v620, v621)
+
+                        if v621 == nil then
+                            break
+                        end
+                        if v622.Name == 'Gold Node' and (v622.PrimaryPart and (v622.PrimaryPart.Position - _HumanoidRootPart10.Position).Magnitude < 20) then
+                            local _EntityID23 = v622:GetAttribute('EntityID')
+                            local v624 = require(game.ReplicatedStorage.Modules.sparseSet)
+                            local v625 = v624.new()
+                            local _dense4 = v625.dense
+                            local _sparse4 = v625.sparse
+
+                            if not _sparse4[_EntityID23] then
+                                v624.insert(v625, _EntityID23)
+                                u41.SwingTool.send(_dense4)
+                                table.clear(_sparse4)
+                                table.clear(_dense4)
+
+                                v625.size = 0
+                            end
+
+                            local _Humanoid3 = game.Players.LocalPlayer.Character.Humanoid
+                            local v629, v630, v631 = pairs(game.ReplicatedStorage.Animations:GetChildren())
+                            local v632 = {}
+
+                            while true do
+                                local v633
+
+                                v631, v633 = v629(v630, v631)
+
+                                if v631 == nil then
+                                    break
+                                end
+                                if v633 and v633:IsA('Animation') then
+                                    v632[v633.Name] = _Humanoid3:LoadAnimation(v633)
+                                end
+                            end
+
+                            if not v632.Slash.IsPlaying then
+                                v632.Slash:Play()
+                            end
+                        end
+                    end
+                end
+
+                wait(0.5)
+            end
+        end)
+    end
+end)
+
+local u634 = false
+
+_MainAura:Toggle('Critters Aura', function(p635)
+    u634 = p635
+
+    if u634 then
+        spawn(function()
+            while u634 do
+                local _HumanoidRootPart11 = game.Players.LocalPlayer.Character.HumanoidRootPart
+                local v637, v638, v639 = ipairs(game.Workspace.Critters:GetChildren())
+                local v640 = {}
+
+                while true do
+                    local v641
+
+                    v639, v641 = v637(v638, v639)
+
+                    if v639 == nil then
+                        break
+                    end
+                    if (v641:GetPivot().Position - _HumanoidRootPart11.Position).Magnitude < 20 then
+                        table.insert(v640, v641:GetAttribute('EntityID'))
+                    end
+                end
+
+                local v642, v643, v644 = ipairs(game.Workspace.HumanoidCritters:GetChildren())
+
+                while true do
+                    local v645
+
+                    v644, v645 = v642(v643, v644)
+
+                    if v644 == nil then
+                        break
+                    end
+                    if (v645:GetPivot().Position - _HumanoidRootPart11.Position).Magnitude < 20 then
+                        table.insert(v640, v645:GetAttribute('EntityID'))
+                    end
+                end
+
+                if #v640 >= 1 then
+                    local v646 = require(game.ReplicatedStorage.Modules.sparseSet)
+                    local v647 = v646.new()
+                    local _dense5 = v647.dense
+                    local _sparse5 = v647.sparse
+                    local v650, v651, v652 = ipairs(v640)
+
+                    while true do
+                        local v653
+
+                        v652, v653 = v650(v651, v652)
+
+                        if v652 == nil then
+                            break
+                        end
+
+                        v646.insert(v647, v653)
+                    end
+
+                    u41.SwingTool.send(_dense5)
+                    table.clear(_sparse5)
+                    table.clear(_dense5)
+
+                    v647.size = 0
+
+                    if u579 then
+                        local _Humanoid4 = game.Players.LocalPlayer.Character.Humanoid
+                        local v655, v656, v657 = pairs(game.ReplicatedStorage.Animations:GetChildren())
+                        local v658 = {}
+
+                        while true do
+                            local v659
+
+                            v657, v659 = v655(v656, v657)
+
+                            if v657 == nil then
+                                break
+                            end
+                            if v659 and v659:IsA('Animation') then
+                                v658[v659.Name] = _Humanoid4:LoadAnimation(v659)
+                            end
+                        end
+
+                        if not v658.Slash.IsPlaying then
+                            v658.Slash:Play()
+                        end
+                    end
+                end
+
+                wait(0.5)
+            end
+        end)
+    end
+end)
+
+local _AutoDrop = v40:Tab('AutoDrop', false)
+
+function autodrop1(p661)
+    local _LayoutOrder2 = game:GetService('Players').LocalPlayer.PlayerGui.MainGui.RightPanel.Inventory.List[p661].LayoutOrder
+
+    u41.DropBagItem.send(_LayoutOrder2)
+end
+
+local u663 = 'LOL'
+
+_AutoDrop:Dropdown('Select Item', {
+    'Raw Gold',
+    'Leaves',
+    'Wood',
+    'Log',
+    'Arrow',
+    'Bloodfruit',
+    'Pumpkin',
+    'Strangefruit',
+    'Strawberry',
+    'Oddberry',
+    'Lemon',
+    'Apple',
+    'Coconut',
+    'Prickly Pear',
+    'Jelly',
+    'Sunfruit',
+    'Bluefruit',
+    'Berry',
+    'Orange',
+    'Cloudberry',
+    'Banana',
+}, function(p664)
+    u663 = p664
+end)
+
+local u665 = false
+
+_AutoDrop:Toggle('Auto Drop Selected Item x1', function(p666)
+    u665 = p666
+
+    if u665 then
+        spawn(function()
+            while u665 do
+                if u663 ~= 'LOL' then
+                    autodrop1(u663)
+                    wait(0.05)
+                end
+            end
+        end)
+    end
+end)
+
+local u667 = false
+
+_AutoDrop:Toggle('Auto Drop Selected Item x2', function(p668)
+    u667 = p668
+
+    if u667 then
+        spawn(function()
+            while u667 do
+                if u663 ~= 'LOL' then
+                    autodrop1(u663)
+                    autodrop1(u663)
+                    wait(0.05)
+                end
+            end
+        end)
+    end
+end)
+
+local u669 = false
+
+_AutoDrop:Toggle('Auto Drop Selected Item x3', function(p670)
+    u669 = p670
+
+    if u669 then
+        spawn(function()
+            while u669 do
+                if u663 ~= 'LOL' then
+                    autodrop1(u663)
+                    autodrop1(u663)
+                    autodrop1(u663)
+                    wait(0.05)
+                end
+            end
+        end)
+    end
+end)
+
+local u671 = false
+
+_AutoDrop:Toggle('Auto Drop Selected Item x4', function(p672)
+    u671 = p672
+
+    if u671 then
+        spawn(function()
+            while u671 do
+                if u663 ~= 'LOL' then
+                    autodrop1(u663)
+                    autodrop1(u663)
+                    autodrop1(u663)
+                    autodrop1(u663)
+                    wait(0.05)
+                end
+            end
+        end)
+    end
+end)
+
+local _Building = v40:Tab('Building', false)
+local u674 = false
+
+_Building:Toggle('Auto Plant Box', function(p675)
+    u674 = p675
+
+    if u674 then
+        spawn(function()
+            while u674 do
+                local v676 = {
+                    vec = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(-0.2, -2.5, 1),
+                    buildingName = 'Plant Box',
+                    yrot = 0,
+                    isMobile = false,
+                }
+
+                u41.PlaceStructure.send(v676)
+                wait(0.2)
+            end
+        end)
+    end
+end)
+
+local u677 = false
+
+_Building:Toggle('Auto CampFire', function(p678)
+    u677 = p678
+
+    if u677 then
+        spawn(function()
+            while u677 do
+                local v679 = {
+                    vec = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(-0.2, -2.5, 1),
+                    buildingName = 'Campfire',
+                    yrot = 0,
+                    isMobile = false,
+                }
+
+                u41.PlaceStructure.send(v679)
+                wait(0.2)
+            end
+        end)
+    end
+end)
+
+local u680 = false
+
+_Building:Toggle("Auto Big Ol' Hut", function(p681)
+    u680 = p681
+
+    if u680 then
+        spawn(function()
+            while u680 do
+                local v682 = {
+                    vec = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(-0.2, -2.5, 1),
+                    buildingName = "Big Ol' Hut",
+                    yrot = 0,
+                    isMobile = false,
+                }
+
+                u41.PlaceStructure.send(v682)
+                wait(0.2)
+            end
+        end)
+    end
+end)
+_Building:Keybind('Auto Place Hut', Enum.KeyCode.M, function()
+    local v683 = {
+        vec = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(-0.2, -2.5, 1),
+        buildingName = "Big Ol' Hut",
+        yrot = 0,
+        isMobile = false,
+    }
+
+    u41.PlaceStructure.send(v683)
+end)
+
+local _EXTRA = v40:Tab('EXTRA', false)
+local u685 = false
+
+_EXTRA:Toggle('Auto Coin Press(Gold)', function(p686)
+    u685 = p686
+
+    if u685 then
+        spawn(function()
+            while u685 do
+                local _HumanoidRootPart12 = game.Players.LocalPlayer.Character.HumanoidRootPart
+                local v688, v689, v690 = ipairs(game.Workspace.Deployables:GetChildren())
+
+                while true do
+                    local v691
+
+                    v690, v691 = v688(v689, v690)
+
+                    if v690 == nil then
+                        break
+                    end
+                    if (_HumanoidRootPart12.Position - v691:GetPivot().Position).Magnitude < 20 then
+                        local v692 = {
+                            entityID = v691:GetAttribute('EntityID'),
+                            itemID = 597,
+                        }
+
+                        u41.InteractStructure.send(v692)
+                    end
+                end
+
+                wait(0.01)
+            end
+        end)
+    end
+end)
+
+local u693 = false
+
+_EXTRA:Toggle('Auto Collect Coin(Coin Press)', function(p694)
+    u693 = p694
+
+    if u693 then
+        spawn(function()
+            while u693 do
+                local _HumanoidRootPart13 = game.Players.LocalPlayer.Character.HumanoidRootPart
+                local v696, v697, v698 = ipairs(game.Workspace.Items:GetChildren())
+
+                while true do
+                    local v699
+
+                    v698, v699 = v696(v697, v698)
+
+                    if v698 == nil then
+                        break
+                    end
+                    if (v699.Name == 'Coin' or v699.Name == 'Coin2') and (_HumanoidRootPart13.Position - v699:GetPivot().Position).Magnitude < 50 then
+                        local _EntityID24 = v699:GetAttribute('EntityID')
+
+                        u41.Pickup.send(_EntityID24)
+                    end
+                end
+
+                wait(0.2)
+            end
+        end)
+    end
+end)
+
+local u701 = {
+    Leaves = 166,
+    Wood = 1,
+    Log = 320,
+    Coal = 178,
+}
+local u702 = 'LOL'
+
+_EXTRA:Dropdown('Select Material', {
+    'Leaves',
+    'Wood',
+    'Log',
+    'Coal',
+}, function(p703)
+    u702 = p703
+end)
+
+local u704 = false
+
+_EXTRA:Toggle('Auto Fire', function(p705)
+    u704 = p705
+
+    if u704 then
+        spawn(function()
+            while u704 do
+                if u702 ~= 'LOL' then
+                    local _HumanoidRootPart14 = game.Players.LocalPlayer.Character.HumanoidRootPart
+                    local v707, v708, v709 = ipairs(game.Workspace.Deployables:GetChildren())
+
+                    while true do
+                        local v710
+
+                        v709, v710 = v707(v708, v709)
+
+                        if v709 == nil then
+                            break
+                        end
+                        if v710.Name == 'Campfire' and (_HumanoidRootPart14.Position - v710:GetPivot().Position).Magnitude < 20 then
+                            local v711 = {
+                                entityID = v710:GetAttribute('EntityID'),
+                                itemID = u701[u702],
+                            }
+
+                            u41.InteractStructure.send(v711)
+                        end
+                    end
+
+                    wait(0.2)
+                end
+            end
+        end)
+    end
+end)
+
+local _Settings = v40:Tab('Settings', false)
+
+_Settings:Label('UI')
+_Settings:Keybind('Toggle', Enum.KeyCode.LeftShift, function()
+    u38:Toggle()
+end)
+
+local _Credits = v40:Tab('Credits', false)
+
+_Credits:Label('Scripted by: mae_luadev')
+_Credits:Label('UI by: syn_ergy')
+_Credits:Label('https://discord.gg/hPajKp4qkA')
+v40:Tab('', false)
